@@ -1,4 +1,10 @@
-# import pandas as pd
+#Write a script called "stats.py" that prints the
+#mean, median, mode, range, variance, and standard deviation
+#for the Alcohol and Tobacco dataset with full text
+#(ex. "The range for the Alcohol and Tobacco dataset is ...").
+
+
+import pandas as pd
 
 data = '''Region,Alcohol,Tobacco
 North,6.47,4.03
@@ -15,4 +21,18 @@ Northern Ireland,4.02,4.56'''
 
 data = data.splitlines()
 data = [i.split(',') for i in data]
-print data
+
+
+column_names = data[0] # this is the first row
+data_rows = data[1::] # these are all the following rows of data
+df = pd.DataFrame(data_rows, columns=column_names)
+
+
+df['Alcohol'] = df['Alcohol'].astype(float)
+df['Tobacco'] = df['Tobacco'].astype(float)
+
+a = df['Alcohol']
+a += df['Tobacco']
+
+
+df['all'] = pd.concat([df['Alcohol'].dropna(), df['Tobacco'].dropna()]).reindex_like(df)
